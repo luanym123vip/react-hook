@@ -3,6 +3,7 @@ import './App.css';
 import Nav from './views/Nav';
 import { useState } from 'react';
 import './App.scss'
+import Todo from './Todo';
 //template + logic
 // JSX  
 const App = () => {
@@ -19,8 +20,16 @@ const App = () => {
     setValue(changeValue)
   }
   const handleButtonClickMe = () => {
-    let newtodo = { id: 'abc', title: value };
+    let newtodo = {
+      id: Math.floor(Math.random() * 1000) + 1,
+      title: value
+    };
     setList([...list, newtodo]);
+  }
+  const handleDeleteTodos = (id) => {
+    let currentTodos = list;
+    currentTodos = currentTodos.filter(item => item.id !== id)
+    setList(currentTodos);
   }
   return (
     <div className="App">
@@ -30,20 +39,10 @@ const App = () => {
         <h1> Hello world with React Hook and {name}</h1>
         <input type='text' value={value} onChange={(event) => handlechangleInput(event)} />
         <button type='button' onClick={() => handleButtonClickMe()}>Click me</button>
-        <div className='todo-container'>
-          {list && list.length > 0 &&
-            list.map((item, index) => {
-              return (
-                <li className='todo-child' key={item.id}>
-                  {item.title}
-                </li>
-              )
-
-            })
-          }
-
-
-        </div>
+        <Todo
+          list_todo={list}
+          handleDeleteTodos={handleDeleteTodos}
+        />
       </header>
     </div>
   );
